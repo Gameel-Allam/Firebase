@@ -25,6 +25,23 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
+         # Step to call the Go analysis backend
+      - name: Call Analysis App
+        id: analysis_check
+        run: |
+          ANALYSIS_RESULT=$(curl -s https://bd7d-156-198-47-249.ngrok-free.app/check | jq -r '.status')
+          echo "Analysis result: $ANALYSIS_RESULT"
+          echo "::set-output name=result::$ANALYSIS_RESULT"
+
+      # Step to check the result
+      - name: Check if safe to deploy
+        run: |
+          if [[ "${{ steps.analysis_check.outputs.result }}" == "fail" ]]; then
+            echo "Deployment blocked: Analysis failed."
+            exit 1
+          fi
+          echo "Analysis passed, proceeding with deployment."
+
       - name: Deploy to Firebase
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
