@@ -33,7 +33,7 @@ jobs:
       - name: Call Analysis App
         id: analysis_check
         run: |
-          ANALYSIS_RESULT=$(curl -s -X POST "https://my-analysis-backend.com/analyze" \
+          ANALYSIS_RESULT=$(curl -s -X POST "https://bd7d-156-198-47-249.ngrok-free.app/analyze" \
             -F "file=@repo.zip" \
             | jq -r '.status')
           echo "Analysis result: $ANALYSIS_RESULT"
