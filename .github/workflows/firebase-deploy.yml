@@ -3,10 +3,10 @@ name: Firebase Deploy
 on:
   push:
     branches:
-      - main # Set the branch you want to trigger the deploy, usually main or master
+      - main
   pull_request:
     branches:
-      - main # Adjust the branch filter as needed
+      - main
 
 jobs:
   deploy:
@@ -25,11 +25,17 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-         # Step to call the Go analysis backend
+      # Zip the repository files
+      - name: Zip repository
+        run: zip -r repo.zip .
+
+      # Upload the zip file to the analysis app
       - name: Call Analysis App
         id: analysis_check
         run: |
-          ANALYSIS_RESULT=$(curl -s https://bd7d-156-198-47-249.ngrok-free.app/check | jq -r '.status')
+          ANALYSIS_RESULT=$(curl -s -X POST "https://my-analysis-backend.com/analyze" \
+            -F "file=@repo.zip" \
+            | jq -r '.status')
           echo "Analysis result: $ANALYSIS_RESULT"
           echo "::set-output name=result::$ANALYSIS_RESULT"
 
