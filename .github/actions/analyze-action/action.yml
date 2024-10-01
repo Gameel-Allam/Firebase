@@ -18,11 +18,15 @@ runs:
       run: zip -r repo.zip .
       shell: bash
 
-    - name: Upload the zip file to the analysis app
+    - name: Upload the zip file to the analysis app and handle result
       run: |
         ANALYSIS_RESULT=$(curl -s -X POST "${{ inputs.analysis_url }}" \
           -F "file=@repo.zip" \
           | jq -r '.status')
         echo "Analysis result: $ANALYSIS_RESULT"
         echo "::set-output name=result::$ANALYSIS_RESULT"
+        if [[ "$ANALYSIS_RESULT" == "fail" ]]; then
+          echo "Deployment blocked: Analysis failed."
+          exit 1  # Fail the action
+        fi
       shell: bash

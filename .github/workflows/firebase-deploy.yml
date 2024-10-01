@@ -22,17 +22,16 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
+      # Use the custom analyze action
       - name: Analyze code before deploy
-        id: analysis_step
         uses: ./.github/actions/analyze-action
         with:
           analysis_url: "https://71f2-156-198-47-249.ngrok-free.app/analyze"
 
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
       - name: Deploy to Firebase
-        if: steps.analysis_step.outputs.result == 'pass'
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: firebase deploy --only hosting
