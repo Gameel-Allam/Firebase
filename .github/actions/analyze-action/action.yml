@@ -14,11 +14,9 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install jq
-      run: sudo apt-get install -y jq
-
     - name: Zip the repository
       run: zip -r repo.zip .
+      shell: bash
 
     - name: Upload the zip file to the analysis app
       run: |
