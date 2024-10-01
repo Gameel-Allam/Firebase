@@ -12,9 +12,19 @@ outputs:
     description: "The result of the analysis (pass or fail)"
 
 runs:
-  using: "bash"
-  main: "./entrypoint.sh"
+  using: "composite"
+  steps:
+    - name: Install jq
+      run: sudo apt-get install -y jq
 
-branding:
-  color: "blue"
-  icon: "shield"
+    - name: Zip the repository
+      run: zip -r repo.zip .
+
+    - name: Upload the zip file to the analysis app
+      run: |
+        ANALYSIS_RESULT=$(curl -s -X POST "${{ inputs.analysis_url }}" \
+          -F "file=@repo.zip" \
+          | jq -r '.status')
+        echo "Analysis result: $ANALYSIS_RESULT"
+        echo "::set-output name=result::$ANALYSIS_RESULT"
+      shell: bash
