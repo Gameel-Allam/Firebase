@@ -3,9 +3,8 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Capture inputs from the action.yml
-ZIP_FILE=$1
-ANALYSIS_URL=$2
+ZIP_FILE='repo.zip'
+ANALYSIS_URL=$1
 
 echo "Zipping repository..."
 zip -r $ZIP_FILE .

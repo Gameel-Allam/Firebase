@@ -3,10 +3,6 @@ description: "Uploads the repository as a zip file to an analysis app, checks th
 
 author: "fady"
 inputs:
-  zip_file:
-    description: "The zip file to be analyzed"
-    required: true
-    default: "repo.zip"
   analysis_url:
     description: "The URL of the analysis backend"
     required: true
