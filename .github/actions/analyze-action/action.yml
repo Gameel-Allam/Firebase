@@ -1,0 +1,24 @@
+name: "Analyze Before Deploy"
+description: "Uploads the repository as a zip file to an analysis app, checks the result, and either proceeds or blocks the deployment."
+
+author: "fady"
+inputs:
+  zip_file:
+    description: "The zip file to be analyzed"
+    required: true
+    default: "repo.zip"
+  analysis_url:
+    description: "The URL of the analysis backend"
+    required: true
+
+outputs:
+  result:
+    description: "The result of the analysis (pass or fail)"
+
+runs:
+  using: "bash"
+  main: "./entrypoint.sh"
+
+branding:
+  color: "blue"
+  icon: "shield"
